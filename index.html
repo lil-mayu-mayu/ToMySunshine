@@ -3,116 +3,175 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Valentine's Card</title>
-    <style>
-        body {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            background-color: pink;
-            font-family: Arial, sans-serif;
-            text-align: center;
-        }
-        .card {
-            position: relative;
-            width: 300px;
-            height: 500px;
-            background: white;
-            border-radius: 15px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-            padding: 20px;
-        }
-        .heart {
-            width: 100px;
-            height: 100px;
-            background-color: red;
-            position: absolute;
-            top: 20px;
-            left: 50%;
-            transform: translateX(-50%) rotate(-45deg);
-            animation: beat 1s infinite;
-        }
-        .heart:before, .heart:after {
-            content: '';
-            width: 100px;
-            height: 100px;
-            background-color: red;
-            border-radius: 50%;
-            position: absolute;
-        }
-        .heart:before {
-            top: -50px;
-            left: 0;
-        }
-        .heart:after {
-            top: 0;
-            left: 50px;
-        }
-        @keyframes beat {
-            0%, 100% { transform: translateX(-50%) rotate(-45deg) scale(1); }
-            50% { transform: translateX(-50%) rotate(-45deg) scale(1.2); }
-        }
-        .message {
-            margin-top: 150px;
-            font-size: 20px;
-            font-weight: bold;
-        }
-        .image-container {
-            margin-top: 20px;
-        }
-        .image-container img {
-            width: 80%;
-            object-fit: cover;
-        }
-        .button {
-            margin-top: 20px;
-            padding: 10px 20px;
-            background-color: red;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-        .button:hover {
-            background-color: darkred;
-        }
-    </style>
+    <title>Valentine day</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>💖</text></svg>">
 </head>
+
 <body>
     <div class="card">
-        <div class="heart"></div>
-        <div class="message" id="message">Будь моєю Валентинкою? 💖</div>
+        <div class="heart" id="heart"></div>
+        <div class="message" id="message">Тобі надіслали валентинку 💖💖💖</div>
         <div class="image-container">
-            <img id="valentineImage" src="image1.png" alt="Valentine Image">
+            <img id="valentineImage" src="image1.png" alt="Valentine">
         </div>
-        <button class="button" onclick="changeMessageAndImage()">Натисни мене</button>
+        <button class="button" id="actionButton" onclick="changeMessageAndImage()">Натисни мене</button>
     </div>
-    
+
     <script>
-        function changeMessageAndImage() {
-            const messages = [
-                "Я тебе люблю! ❤️",
-                "Ти найкращий! 💕",
-                "Щастя тобі! 😊",
-                "Будь завжди щасливою! 🌸",
-                "Будь завжди щасливbndffng"
-            ];
-            const images = [
-                "image2.png", 
-                "image3.png", 
-                "image4.png", 
-                "image5.png",
-                "image6.png"
-            ];
-            
-            const messageElement = document.getElementById("message");
-            const imageElement = document.getElementById("valentineImage");
-            const randomIndex = Math.floor(Math.random() * messages.length);
-            
-            messageElement.innerText = messages[randomIndex];
-            imageElement.src = images[randomIndex];
+        
+    const messages = [
+        "Ти моє сонце навіть у похмурий день! ☀️",
+        "Я кохаю тебе більше, ніж можна описати словами! ❤️",
+        "З тобою кожен момент прекрасний! ✨",
+        "Ти моє серце, мій світ, мій всесвіт! 🌍",
+        "Найкращий подарунок у житті – це ти! 🎁"
+    ];
+
+    const images = [
+        "image6.png", 
+        "image3.png", 
+        "image4.png", 
+        "image5.png",
+        "image2.png"
+    ];
+
+    let index = 0;
+
+    function changeMessageAndImage() {
+        const messageElement = document.getElementById("message");
+        const imageElement = document.getElementById("valentineImage");
+        const heartElement = document.getElementById("heart");
+        const buttonElement = document.getElementById("actionButton");
+
+        if (index < messages.length) {
+            messageElement.innerText = messages[index];
+            imageElement.src = images[index];
+            index++;
+        } 
+        if (index === messages.length) {
+            buttonElement.style.display = "none";
+
+            setTimeout(() => {
+                heartElement.classList.add("big");
+                messageElement.innerText = "Кінець ❤️";
+                document.getElementById("valentineImage").src = "end.gif";
+
+                setTimeout(() => {
+                    buttonElement.style.display = "block";
+                    buttonElement.innerText = "Почати знову";
+                    buttonElement.onclick = resetCard;
+                }); 
+            }, 2000);
+            setTimeout(() => {
+                heartElement.classList.add("stop");
+            }, 2000);
         }
-    </script>
+    }
+
+    function resetCard() {
+        index = 0;
+        const heartElement = document.getElementById("heart");
+        document.getElementById("heart").classList.remove("big", "stop");
+        document.getElementById("message").innerText = "Тобі надіслали валентинку 💖💖💖";
+        document.getElementById("valentineImage").src = "image1.png";
+        document.getElementById("actionButton").innerText = "Натисни мене";
+        document.getElementById("actionButton").onclick = changeMessageAndImage;
+        document.getElementById("actionButton").style.display = "block";
+
+        // Відновлюємо анімацію серця
+        heartElement.style.transition = "transform 1s ease-in-out";
+        heartElement.style.transform = "translateX(-50%) rotate(-45deg) scale(1)";
+    }
+</script>
+
+
+    <style>
+    body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        background-color: pink;
+        font-family: Arial, sans-serif;
+        text-align: center;
+    }
+    .card {
+        position: relative;
+        width: 300px;
+        height: 500px;
+        background: white;
+        border-radius: 15px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        padding: 20px;
+    }
+      .heart {
+        width: 100px;
+        height: 100px;
+        background-color: red;
+        position: absolute;
+        top: 20px;
+        left: 50%;
+        transform: translateX(-50%) rotate(-45deg);
+        animation: beat 1s infinite;
+        transition: transform 1s ease-in-out; /* Плавний перехід для зміни масштабу */
+    }
+
+    .heart.stop {
+        transform: translateX(-50%) rotate(-45deg) scale(0); /* Плавне зменшення до 0 */
+    }
+
+    .heart:before, .heart:after {
+        content: '';
+        width: 100px;
+        height: 100px;
+        background-color: red;
+        border-radius: 50%;
+        position: absolute;
+    }
+    .heart:before {
+        top: -50px;
+        left: 0;
+    }
+    .heart:after {
+        top: 0;
+        left: 50px;
+    }
+
+    @keyframes beat {
+        0%, 100% { transform: translateX(-50%) rotate(-45deg) scale(1); }
+        50% { transform: translateX(-50%) rotate(-45deg) scale(1.2); }
+    }
+    .message {
+        margin-top: 150px;
+        font-size: 20px;
+        font-weight: bold;
+    }
+    .image-container {
+        margin-top: 20px;
+    }
+    .image-container img {
+        width: 90%;
+        object-fit: cover;
+    }
+    .button {
+        margin-top: 20px;
+        padding: 10px 20px;
+        background-color: red;
+        color: white;
+        border: none;
+        border-radius: 30px;
+        cursor: pointer;
+        position: absolute;
+        bottom: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        transition: opacity 0.3s ease;
+    }
+    .button:hover {
+        background-color: darkred;
+    }
+</style>
+
+
 </body>
 </html>
